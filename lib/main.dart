@@ -1,6 +1,8 @@
 import 'package:appmovil261/features/auth/domain/usecases/signup_usecase.dart';
+import 'package:appmovil261/features/signup/ui/bloc/signup_bloc.dart';
 import 'package:appmovil261/features/signup/ui/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
@@ -18,6 +20,13 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: SignupScreen());
+    return MaterialApp(
+      initialRoute: '/signup',
+      routes: {
+        '/signup': (_) =>
+            BlocProvider(create: (_) => SignupBloc(), child: SignupScreen()),
+        '/home': (_) => Text("Profile"),
+      },
+    );
   }
 }
