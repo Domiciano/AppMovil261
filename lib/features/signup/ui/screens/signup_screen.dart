@@ -71,6 +71,12 @@ class SignupScreen extends StatelessWidget {
                       },
                       child: Text("Registrar"),
                     ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/login');
+                      },
+                      child: const Text("¿Ya tienes cuenta? Inicia sesión"),
+                    ),
                   ],
                 );
               },
