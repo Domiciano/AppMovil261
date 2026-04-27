@@ -52,26 +52,39 @@ Permitir a usuarios existentes acceder a su cuenta mediante sus credenciales pre
 
 ---
 
-## 3. Feature: Pantalla de Perfil
+## 3. Feature: ProfileScreen
 
 ### Objetivo
-Mostrar la información del usuario autenticado y permitirle cerrar sesión.
+Pantalla principal post-login con `BottomNavigationBar` de 3 tabs: Perfil, Home y Posts.
+
+### Convención de nomenclatura
+- `Screen` = página completa con scaffold/navegación propia.
+- `Page` = sub-pantalla hosteada dentro de una Screen.
+
+### Estructura de archivos
+```
+lib/features/profile/
+  domain/models/post.dart          # Modelo Post
+  ui/screens/profile_screen.dart   # Screen principal con BottomNavigationBar
+  ui/pages/profile_page.dart       # Tab: resumen del usuario
+  ui/pages/home_page.dart          # Tab: Home (vacío)
+  ui/pages/posts_page.dart         # Tab: formulario nuevo Post
+```
 
 ### User Stories
 - **Como** usuario autenticado, **quiero** ver mis datos básicos (email) **para** confirmar que estoy en mi cuenta.
-- **Como** usuario, **quiero** poder cerrar sesión **para** proteger mi privacidad.
+- **Como** usuario, **quiero** crear posts desde la app.
 
 ### Requerimientos Funcionales
-- **Entradas:** Datos de la sesión actual de Supabase.
-- **Acciones:**
-    - Obtener el email del usuario desde `Supabase.instance.client.auth`.
-    - Acción de "Logout" que limpie la sesión.
-- **Salidas:** UI con el email del usuario y botón de cerrar sesión. Redirección a Login tras el logout.
+- `ProfilePage`: muestra datos del usuario desde Supabase Auth.
+- `HomePage`: pantalla vacía de placeholder.
+- `PostsPage`: formulario con campos `title` y `content` mapeados al modelo `Post`.
 
 ### Acceptance Criteria
-- [ ] Pantalla `/home` (Perfil) implementada como un widget completo, no solo texto.
-- [ ] Mostrar el email del usuario actual.
-- [ ] Botón funcional de "Cerrar Sesión".
+- [x] `ProfileScreen` con `BottomNavigationBar` (Perfil / Home / Posts).
+- [x] `PostsPage` con formulario validado para el modelo `Post`.
+- [ ] `ProfilePage` muestra el email del usuario actual (requiere lógica de sesión).
+- [ ] Botón funcional de "Cerrar Sesión" en `ProfilePage`.
 
 ---
 
@@ -88,9 +101,11 @@ Este manifiesto rastrea el progreso actual del desarrollo basado en las especifi
 | **Login** | UI (LoginScreen) | ✅ | Pantalla creada con navegación a Signup. |
 | | Lógica (LoginBloc) | ✅ | Implementada con manejo de estados. |
 | | Usecase (LoginUsecase) | ✅ | Implementado y conectado al Repo. |
-| **Perfil** | UI (Profile/Home) | ⚠️ | Actualmente es solo un `Text("Profile")`. |
-| | Lógica de Sesión | ❌ | Pendiente obtener datos de Supabase. |
+| **ProfileScreen** | ProfileScreen + BottomNavigationBar | ✅ | 3 tabs: Perfil, Home, Posts. |
+| | PostsPage (formulario) | ✅ | Campos title/content con validación. |
+| | Modelo Post | ✅ | toJson/fromJson para Supabase. |
+| | ProfilePage (datos sesión) | ❌ | Pendiente lógica de sesión. |
 | | Logout | ❌ | No iniciada. |
 
 ---
-*Última actualización: 20 de Abril, 2026*
+*Última actualización: 27 de Abril, 2026*
