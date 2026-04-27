@@ -6,9 +6,10 @@ abstract class SignupEvent {}
 
 class SignupSubmitEvent extends SignupEvent {
   //Puedo hacer un modelo de usuario de UI
+  final String username;
   final String email;
   final String password;
-  SignupSubmitEvent({required this.email, required this.password});
+  SignupSubmitEvent({required this.username, required this.email, required this.password});
 }
 
 //States
@@ -42,7 +43,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
     //Notificar que estamos cargando
     emit(SignupLoadingState());
     try {
-      await _usecase.execute(event.email, event.password);
+      await _usecase.execute(event.username, event.email, event.password);
       emit(SignupSuccessState());
     } catch (e) {
       emit(SignupFailState(message: e.toString())); //Mensaje de error requerido

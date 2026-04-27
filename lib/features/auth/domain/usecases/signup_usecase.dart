@@ -4,7 +4,7 @@ import 'package:appmovil261/features/auth/domain/repo/auth_repo.dart';
 class SignupUsecase {
   AuthRepo repo = AuthRepoImpl();
 
-  Future<void> execute(String email, String password) async {
+  Future<void> execute(String username, String email, String password) async {
     await repo.signup(email, password);
   }
 }

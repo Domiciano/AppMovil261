@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class SignupScreen extends StatelessWidget {
   SignupScreen({super.key});
 
+  final TextEditingController usernameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passController = TextEditingController();
 
@@ -33,6 +34,14 @@ class SignupScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            TextField(
+              controller: usernameController,
+              decoration: InputDecoration(
+                labelText: 'Nombre de usuario',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 16),
             TextField(
               controller: emailController,
               decoration: InputDecoration(
@@ -63,6 +72,7 @@ class SignupScreen extends StatelessWidget {
                         //Registro
                         context.read<SignupBloc>().add(
                           SignupSubmitEvent(
+                            username: usernameController.text,
                             email: emailController.text,
                             password: passController.text,
                           ),
