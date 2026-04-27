@@ -1,16 +1,16 @@
-import 'package:appmovil261/features/profile/ui/pages/home_page.dart';
-import 'package:appmovil261/features/profile/ui/pages/posts_page.dart';
+import 'package:appmovil261/features/home/ui/pages/home_page.dart';
+import 'package:appmovil261/features/post/ui/pages/posts_page.dart';
 import 'package:appmovil261/features/profile/ui/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  State<MainScreen> createState() => _MainScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
   static const _pages = <Widget>[
