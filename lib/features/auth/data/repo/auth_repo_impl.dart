@@ -13,7 +13,10 @@ class AuthRepoImpl extends AuthRepo {
   }
 
   @override
-  Future<void> signup(String email, String password) async {
+  Future<String> signup(String email, String password) async {
     AuthResponse response = await _source.signup(email, password);
+    return response
+        .user!
+        .id; //WARNING: si el optional esta vacio, la app estalla
   }
 }

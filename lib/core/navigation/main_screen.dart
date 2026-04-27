@@ -2,6 +2,7 @@ import 'package:appmovil261/features/home/ui/pages/home_page.dart';
 import 'package:appmovil261/features/post/ui/pages/posts_page.dart';
 import 'package:appmovil261/features/profile/ui/pages/profile_page.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -13,11 +14,20 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
-  static const _pages = <Widget>[
-    ProfilePage(),
-    HomePage(),
-    PostsPage(),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    // Espera a que el arbol de componentes se monte
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      //Rompi el patron
+      final session = Supabase.instance.client.auth.currentSession;
+      if (session == null) {
+        Navigator.pushReplacementNamed(context, '/login');
+      }
+    });
+  }
+
+  static const _pages = <Widget>[ProfilePage(), HomePage(), PostsPage()];
 
   static const _titles = ['Perfil', 'Home', 'Nuevo Post'];
 
