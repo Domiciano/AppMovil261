@@ -1,6 +1,6 @@
 import 'package:appmovil261/features/login/ui/bloc/login_bloc.dart';
 import 'package:appmovil261/features/login/ui/screens/login_screen.dart';
-import 'package:appmovil261/navigation/main_screen.dart';
+import 'package:appmovil261/core/navigation/main_screen.dart';
 import 'package:appmovil261/features/signup/ui/bloc/signup_bloc.dart';
 import 'package:appmovil261/features/signup/ui/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
