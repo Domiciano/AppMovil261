@@ -13,7 +13,7 @@ class ConversationsPage extends StatelessWidget {
     final currentUserId = Supabase.instance.client.auth.currentUser!.id;
 
     return BlocProvider(
-      create: (_) => UsersBloc()..add(LoadUsersEvent(currentUserId)),
+      create: (_) => UsersBloc(),
       child: BlocListener<UsersBloc, UsersState>(
         listener: (context, state) {
           if (state is NavigateToChatState) {

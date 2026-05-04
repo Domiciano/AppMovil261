@@ -1,4 +1,3 @@
-import 'package:appmovil261/features/chat/domain/usecases/get_or_create_conversation_usecase.dart';
 import 'package:appmovil261/features/chat/domain/usecases/get_profiles_usecase.dart';
 import 'package:appmovil261/features/profile/domain/model/profile.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,37 +41,16 @@ class NavigateToChatState extends UsersState {
 
 // BLoC
 class UsersBloc extends Bloc<UsersEvent, UsersState> {
-  final GetProfilesUsecase _profilesUsecase = GetProfilesUsecase();
-  final GetOrCreateConversationUsecase _conversationUsecase =
-      GetOrCreateConversationUsecase();
+  UsersBloc() : super(UsersInitialState()) {}
 
-  UsersBloc() : super(UsersInitialState()) {
-    on<LoadUsersEvent>(_load);
-    on<SelectUserEvent>(_selectUser);
-  }
-
-  Future<void> _load(LoadUsersEvent event, Emitter<UsersState> emit) async {
-    emit(UsersLoadingState());
-    try {
-      final users = await _profilesUsecase.execute(event.currentUserId);
-      emit(UsersLoadedState(users));
-    } catch (e) {
-      emit(UsersErrorState(e.toString()));
-    }
-  }
+  Future<void> _load(LoadUsersEvent event, Emitter<UsersState> emit) async {}
 
   Future<void> _selectUser(
-      SelectUserEvent event, Emitter<UsersState> emit) async {
-    // Keep the current list state if possible, or just emit a temporary loading if needed.
-    // However, since we want to navigate, we can emit a navigation state.
-    try {
-      final conversation = await _conversationUsecase.execute(
-        event.currentUserId,
-        event.otherUser.id,
-      );
-      emit(NavigateToChatState(conversation.id, event.otherUser.name));
-    } catch (e) {
-      emit(UsersErrorState(e.toString()));
-    }
+    SelectUserEvent event,
+    Emitter<UsersState> emit,
+  ) async {
+    //Crear conversación si no existe
+
+    //Luego navegar hacia la pantalla por medio de evento
   }
 }
