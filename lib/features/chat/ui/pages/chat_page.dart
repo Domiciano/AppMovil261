@@ -72,6 +72,7 @@ class _MessageList extends StatelessWidget {
         if (state is ChatLoadedState) {
           final messages = state.messages;
           return ListView.builder(
+            reverse: true,
             padding: const EdgeInsets.symmetric(vertical: 8),
             itemCount: messages.length,
             itemBuilder: (context, index) {

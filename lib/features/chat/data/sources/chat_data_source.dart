@@ -62,7 +62,7 @@ class ChatDataSource {
         .from('messages')
         .stream(primaryKey: ['id'])
         .eq('conversation_id', conversationId)
-        .order('created_at')
+        .order('created_at', ascending: false)
         .map((rows) => rows.map(Message.fromJson).toList());
   }
 }
