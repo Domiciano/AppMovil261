@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:appmovil261/features/chat/domain/models/message.dart';
 import 'package:appmovil261/features/chat/domain/usecases/send_message_usecase.dart';
+import 'package:appmovil261/features/chat/domain/usecases/watch_messages_usecase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 
@@ -49,10 +50,17 @@ class ChatErrorState extends ChatState {
 // BLoC
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
   SendMessageUsecase _sendMessageUsecase = SendMessageUsecase();
+  WatchMessagesUsecase _watchMessagesUsecase = WatchMessagesUsecase();
 
   ChatBloc() : super(ChatInitialState()) {
-    on<SubscribeToMessagesEvent>((event, emit) {});
-    on<_MessagesUpdatedEvent>((event, emit) {});
+    on<SubscribeToMessagesEvent>((event, emit) {
+      _watchMessagesUsecase
+          .execute(event.conversationId)
+          .listen((messages) => add(_MessagesUpdatedEvent(messages)));
+    });
+    on<_MessagesUpdatedEvent>((event, emit) {
+      emit(ChatLoadedState(event.messages));
+    });
     on<SendMessageEvent>((event, emit) {
       _sendMessageUsecase.execute(
         Message(

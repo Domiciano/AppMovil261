@@ -9,4 +9,5 @@ abstract class ChatRepository {
     String otherUserId,
   );
   Future<void> sendMessage(Message message);
+  Stream<List<Message>> watchMessages(String conversationId);
 }

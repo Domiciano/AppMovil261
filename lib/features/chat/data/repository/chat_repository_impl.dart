@@ -24,4 +24,9 @@ class ChatRepositoryImpl implements ChatRepository {
   Future<void> sendMessage(Message message) {
     return _dataSource.sendMessage(message);
   }
+
+  @override
+  Stream<List<Message>> watchMessages(String conversationId) {
+    return _dataSource.watchMessages(conversationId);
+  }
 }
