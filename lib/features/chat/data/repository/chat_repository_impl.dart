@@ -13,13 +13,10 @@ class ChatRepositoryImpl implements ChatRepository {
   }
 
   @override
-  Future<List<Conversation>> getConversations(String currentUserId) {
-    return _dataSource.getConversations(currentUserId);
-  }
-
-  @override
   Future<Conversation> getOrCreateConversation(
-      String currentUserId, String otherUserId) {
+    String currentUserId,
+    String otherUserId,
+  ) {
     return _dataSource.getOrCreateConversation(currentUserId, otherUserId);
   }
 

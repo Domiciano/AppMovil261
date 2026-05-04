@@ -4,8 +4,10 @@ import 'package:appmovil261/features/profile/domain/model/profile.dart';
 
 abstract class ChatRepository {
   Future<List<Profile>> getProfiles(String currentUserId);
-  Future<List<Conversation>> getConversations(String currentUserId);
-  Future<Conversation> getOrCreateConversation(String currentUserId, String otherUserId);
+  Future<Conversation> getOrCreateConversation(
+    String currentUserId,
+    String otherUserId,
+  );
   Future<void> sendMessage(Message message);
   Stream<List<Message>> watchMessages(String conversationId);
 }

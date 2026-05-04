@@ -3,7 +3,6 @@ class Conversation {
   final String profile1Id;
   final String profile2Id;
   final DateTime createdAt;
-  // Datos del otro perfil (JOIN opcional para la UI)
   final String? otherUserName;
 
   Conversation({
@@ -14,7 +13,10 @@ class Conversation {
     this.otherUserName,
   });
 
-  factory Conversation.fromJson(Map<String, dynamic> json, String currentUserId) {
+  factory Conversation.fromJson(
+    Map<String, dynamic> json,
+    String currentUserId,
+  ) {
     final isProfile1 = json['profile1_id'] == currentUserId;
     final otherProfile = isProfile1 ? json['profile2'] : json['profile1'];
     return Conversation(
@@ -22,7 +24,9 @@ class Conversation {
       profile1Id: json['profile1_id'] as String,
       profile2Id: json['profile2_id'] as String,
       createdAt: DateTime.parse(json['created_at'] as String),
-      otherUserName: otherProfile != null ? otherProfile['name'] as String? : null,
+      otherUserName: otherProfile != null
+          ? otherProfile['name'] as String?
+          : null,
     );
   }
 }
