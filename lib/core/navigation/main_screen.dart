@@ -1,5 +1,5 @@
+import 'package:appmovil261/features/chat/ui/pages/conversations_page.dart';
 import 'package:appmovil261/features/home/ui/pages/home_page.dart';
-import 'package:appmovil261/features/post/ui/pages/posts_page.dart';
 import 'package:appmovil261/features/profile/ui/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -12,7 +12,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int _currentIndex = 0;
+  int _currentIndex = 1;
 
   @override
   void initState() {
@@ -27,9 +27,9 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
-  static const _pages = <Widget>[ProfilePage(), HomePage(), PostsPage()];
+  static const _pages = <Widget>[ProfilePage(), HomePage(), ConversationsPage()];
 
-  static const _titles = ['Perfil', 'Home', 'Nuevo Post'];
+  static const _titles = ['Perfil', 'Feed', 'Chat'];
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +39,14 @@ class _MainScreenState extends State<MainScreen> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (index) => setState(() => _currentIndex = index),
+        backgroundColor: Colors.white,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
+        showUnselectedLabels: true,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.add_box), label: 'Posts'),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Feed'),
+          BottomNavigationBarItem(icon: Icon(Icons.chat_bubble), label: 'Chat'),
         ],
       ),
     );
