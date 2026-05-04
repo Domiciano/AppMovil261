@@ -1,3 +1,5 @@
+import 'package:appmovil261/features/chat/domain/models/conversation.dart';
+import 'package:appmovil261/features/chat/domain/usecases/get_or_create_conversation_usecase.dart';
 import 'package:appmovil261/features/chat/domain/usecases/get_profiles_usecase.dart';
 import 'package:appmovil261/features/profile/domain/model/profile.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,8 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 abstract class UsersEvent {}
 
 class LoadUsersEvent extends UsersEvent {
-  final String currentUserId;
-  LoadUsersEvent(this.currentUserId);
+  LoadUsersEvent();
 }
 
 class SelectUserEvent extends UsersEvent {
@@ -41,16 +42,26 @@ class NavigateToChatState extends UsersState {
 
 // BLoC
 class UsersBloc extends Bloc<UsersEvent, UsersState> {
-  UsersBloc() : super(UsersInitialState()) {}
+  GetProfilesUsecase _getProfilesUsecase = GetProfilesUsecase();
+  GetOrCreateConversationUsecase _getOrCreateConversationUsecase =
+      GetOrCreateConversationUsecase();
 
-  Future<void> _load(LoadUsersEvent event, Emitter<UsersState> emit) async {}
+  UsersBloc() : super(UsersInitialState()) {
+    //funciones on
+    on<LoadUsersEvent>((event, emit) async {
+      emit(UsersLoadingState());
+      //Cargar los usuarios
+      var profiles = await _getProfilesUsecase.execute();
+      emit(UsersLoadedState(profiles));
+    });
 
-  Future<void> _selectUser(
-    SelectUserEvent event,
-    Emitter<UsersState> emit,
-  ) async {
-    //Crear conversación si no existe
-
-    //Luego navegar hacia la pantalla por medio de evento
+    on<SelectUserEvent>((event, emit) async {
+      //Crear la conversacion u obtenerla
+      Conversation conversation = await _getOrCreateConversationUsecase.execute(
+        event.currentUserId,
+        event.otherUser.id,
+      );
+      emit(NavigateToChatState(conversation.id, event.otherUser.name));
+    });
   }
 }

@@ -6,12 +6,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class ChatDataSource {
   final _client = Supabase.instance.client;
 
-  Future<List<Profile>> getProfiles(String currentUserId) async {
-    final response = await _client
-        .from('profiles')
-        .select()
-        .neq('id', currentUserId)
-        .order('name');
+  Future<List<Profile>> getProfiles() async {
+    final response = await _client.from('profiles').select().order('name');
     return response.map((e) => Profile.fromJson(e)).toList();
   }
 
