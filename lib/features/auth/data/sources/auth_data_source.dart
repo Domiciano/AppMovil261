@@ -15,4 +15,8 @@ class AuthDataSource {
         .signInWithPassword(email: email, password: password);
     return response;
   }
+
+  Future<void> logout() async {
+    await Supabase.instance.client.auth.signOut();
+  }
 }

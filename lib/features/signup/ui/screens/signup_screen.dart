@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class SignupScreen extends StatelessWidget {
   SignupScreen({super.key});
 
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passController = TextEditingController();
@@ -13,7 +14,6 @@ class SignupScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<SignupBloc, SignupState>(
-      //Puedo ejecutar acciones que NO tienen que ver con el arbol de renderizado
       listener: (context, state) {
         if (state is SignupSuccessState) {
           Navigator.pushNamed(context, '/home');
@@ -23,75 +23,103 @@ class SignupScreen extends StatelessWidget {
           ).showSnackBar(SnackBar(content: Text(state.message)));
         }
       },
-      child: Content(),
+      child: _content(),
     );
   }
 
-  Widget Content() {
+  Widget _content() {
     return Scaffold(
       appBar: AppBar(title: const Text('Formulario')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: usernameController,
-              decoration: InputDecoration(
-                labelText: 'Nombre de usuario',
-                border: OutlineInputBorder(),
+        child: Form(
+          key: _formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          child: Column(
+            children: [
+              TextFormField(
+                controller: usernameController,
+                decoration: const InputDecoration(
+                  labelText: 'Nombre de usuario',
+                  border: OutlineInputBorder(),
+                ),
               ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: emailController,
-              decoration: InputDecoration(
-                labelText: 'Correo electrónico',
-                border: OutlineInputBorder(),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: emailController,
+                decoration: const InputDecoration(
+                  labelText: 'Correo electrónico',
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.emailAddress,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'El correo es requerido';
+                  }
+                  final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+$');
+                  if (!emailRegex.hasMatch(value)) {
+                    return 'Ingresa un correo electrónico válido';
+                  }
+                  return null;
+                },
               ),
-              keyboardType: TextInputType.emailAddress,
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: passController,
-              decoration: InputDecoration(
-                labelText: 'Contraseña',
-                border: OutlineInputBorder(),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: passController,
+                decoration: const InputDecoration(
+                  labelText: 'Contraseña',
+                  border: OutlineInputBorder(),
+                ),
+                obscureText: true,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'La contraseña es requerida';
+                  }
+                  if (value.length < 6) {
+                    return 'La contraseña debe tener al menos 6 caracteres';
+                  }
+                  return null;
+                },
               ),
-              obscureText: true,
-            ),
-            const SizedBox(height: 24),
-
-            BlocBuilder<SignupBloc, SignupState>(
-              builder: (context, state) {
-                bool loading = state is SignupLoadingState;
-                return Column(
-                  children: [
-                    loading ? CircularProgressIndicator() : SizedBox.shrink(),
-                    ElevatedButton(
-                      onPressed: () {
-                        //Registro
-                        context.read<SignupBloc>().add(
-                          SignupSubmitEvent(
-                            username: usernameController.text,
-                            email: emailController.text,
-                            password: passController.text,
+              const SizedBox(height: 24),
+              Builder(
+                builder: (context) {
+                  return BlocBuilder<SignupBloc, SignupState>(
+                    builder: (context, state) {
+                      final loading = state is SignupLoadingState;
+                      return Column(
+                        children: [
+                          loading
+                              ? const CircularProgressIndicator()
+                              : const SizedBox.shrink(),
+                          ElevatedButton(
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                context.read<SignupBloc>().add(
+                                  SignupSubmitEvent(
+                                    username: usernameController.text,
+                                    email: emailController.text,
+                                    password: passController.text,
+                                  ),
+                                );
+                              }
+                            },
+                            child: const Text("Registrar"),
                           ),
-                        );
-                        //
-                      },
-                      child: Text("Registrar"),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/login');
-                      },
-                      child: const Text("¿Ya tienes cuenta? Inicia sesión"),
-                    ),
-                  ],
-                );
-              },
-            ),
-          ],
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/login');
+                            },
+                            child: const Text("¿Ya tienes cuenta? Inicia sesión"),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

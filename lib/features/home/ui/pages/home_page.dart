@@ -3,13 +3,32 @@ import 'package:appmovil261/features/post/ui/widgets/post_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  late final PostsListBloc _bloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _bloc = PostsListBloc()..add(PostsListFetchEvent());
+  }
+
+  @override
+  void dispose() {
+    _bloc.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => PostsListBloc()..add(PostsListFetchEvent()),
+    return BlocProvider.value(
+      value: _bloc,
       child: BlocBuilder<PostsListBloc, PostsListState>(
         builder: (context, state) {
           if (state is PostsListLoadingState) {

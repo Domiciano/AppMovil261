@@ -25,7 +25,7 @@ Permitir a nuevos usuarios crear una cuenta en la aplicación utilizando su corr
 - [x] El botón "Registrar" dispara el `SignupBloc`.
 - [x] Muestra un `CircularProgressIndicator` durante la carga.
 - [x] Redirige a `/home` al completar con éxito.
-- [ ] Validación de campos en tiempo real (formato email, longitud password).
+- [x] Validación de campos en tiempo real (formato email, longitud password).
 
 ---
 
@@ -45,10 +45,10 @@ Permitir a usuarios existentes acceder a su cuenta mediante sus credenciales pre
 - **Salidas:** Acceso a la pantalla de Perfil. Mensaje de error si las credenciales son incorrectas.
 
 ### Acceptance Criteria
-- [ ] Pantalla de Login dedicada.
-- [ ] BLoC para manejar el estado de autenticación de login.
-- [ ] Manejo de errores específicos (ej. "Invalid credentials").
-- [ ] Opción para navegar a la pantalla de Registro desde el Login.
+- [x] Pantalla de Login dedicada.
+- [x] BLoC para manejar el estado de autenticación de login.
+- [x] Manejo de errores específicos (ej. "Invalid credentials").
+- [x] Opción para navegar a la pantalla de Registro desde el Login.
 
 ---
 
@@ -83,8 +83,8 @@ lib/features/profile/
 ### Acceptance Criteria
 - [x] `ProfileScreen` con `BottomNavigationBar` (Perfil / Home / Posts).
 - [x] `PostsPage` con formulario validado para el modelo `Post`.
-- [ ] `ProfilePage` muestra el email del usuario actual (requiere lógica de sesión).
-- [ ] Botón funcional de "Cerrar Sesión" en `ProfilePage`.
+- [x] `ProfilePage` muestra el email del usuario actual (requiere lógica de sesión).
+- [x] Botón funcional de "Cerrar Sesión" en `ProfilePage`.
 
 ---
 
@@ -161,12 +161,12 @@ lib/features/post/
 - **Salidas:** Snackbar de éxito y reset del formulario. Snackbar de error si falla Supabase.
 
 ### Acceptance Criteria
-- [ ] Modelo `Post` sin campos nulleables, con `toJson` / `fromJson`.
-- [ ] `toJson` serializa `createdAt` como ISO 8601 string para Supabase.
-- [ ] `PostDataSource.createPost` inserta con `id`, `profile_id` y `created_at` generados en cliente.
-- [ ] `PostBloc` gestiona estados `PostLoading`, `PostSuccess`, `PostError`.
-- [ ] `PostsPage` despacha evento al BLoC y muestra feedback visual.
-- [ ] El formulario se limpia tras un `PostSuccess`.
+- [x] Modelo `Post` sin campos nulleables, con `toJson` / `fromJson`.
+- [x] `toJson` serializa `createdAt` como ISO 8601 string para Supabase.
+- [x] `PostDataSource.createPost` inserta con `id`, `profile_id` y `created_at` generados en cliente.
+- [x] `PostBloc` gestiona estados `PostLoading`, `PostSuccess`, `PostError`.
+- [x] `PostsPage` despacha evento al BLoC y muestra feedback visual.
+- [x] El formulario se limpia tras un `PostSuccess`.
 
 ---
 
@@ -216,15 +216,15 @@ Este manifiesto rastrea el progreso actual del desarrollo basado en las especifi
 | **Registro** | UI (SignupScreen) | ✅ | Funcional con campos básicos. |
 | | Lógica (SignupBloc) | ✅ | Integrado con Usecase. |
 | | Integración Supabase | ✅ | `AuthRepoImpl` usa `AuthDataSource`. |
-| | Validaciones de Formulario | ❌ | Pendiente implementar `FormKey` y validadores. |
+| | Validaciones de Formulario | ✅ | `Form` + `TextFormField` con `AutovalidateMode.onUserInteraction`. |
 | **Login** | UI (LoginScreen) | ✅ | Pantalla creada con navegación a Signup. |
 | | Lógica (LoginBloc) | ✅ | Implementada con manejo de estados. |
 | | Usecase (LoginUsecase) | ✅ | Implementado y conectado al Repo. |
 | **ProfileScreen** | ProfileScreen + BottomNavigationBar | ✅ | 3 tabs: Perfil, Home, Posts. |
 | | PostsPage (formulario) | ✅ | Campos title/content con validación. |
 | | Modelo Post | ✅ | toJson/fromJson para Supabase. |
-| | ProfilePage (datos sesión) | ❌ | Pendiente lógica de sesión. |
-| | Logout | ❌ | No iniciada. |
+| | ProfilePage (datos sesión) | ✅ | Muestra email desde Supabase.instance.client.auth.currentUser. |
+| | Logout | ✅ | ProfileBloc + LogoutUsecase; navega a /login tras cerrar sesión. |
 | **PostsPage — Crear Post** | Modelo Post | ✅ | Sin nulleables; id y createdAt generados en cliente. |
 | | PostDataSource.createPost | ✅ | Insert con id/createdAt del cliente y profile_id. |
 | | PostRepository + Impl | ✅ | Implementado. |
