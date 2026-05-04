@@ -15,18 +15,6 @@ class ChatDataSource {
     return response.map((e) => Profile.fromJson(e)).toList();
   }
 
-  Future<List<Conversation>> getConversations(String currentUserId) async {
-    final response = await _client
-        .from('conversations')
-        .select('*, profile1:profiles!profile1_id(name), profile2:profiles!profile2_id(name)')
-        .or('profile1_id.eq.$currentUserId,profile2_id.eq.$currentUserId')
-        .order('created_at', ascending: false);
-
-    return response
-        .map((e) => Conversation.fromJson(e, currentUserId))
-        .toList();
-  }
-
   Future<Conversation> getOrCreateConversation(
     String currentUserId,
     String otherUserId,
@@ -35,7 +23,9 @@ class ChatDataSource {
     final existing = await _client
         .from('conversations')
         .select()
-        .or('and(profile1_id.eq.$currentUserId,profile2_id.eq.$otherUserId),and(profile1_id.eq.$otherUserId,profile2_id.eq.$currentUserId)')
+        .or(
+          'and(profile1_id.eq.$currentUserId,profile2_id.eq.$otherUserId),and(profile1_id.eq.$otherUserId,profile2_id.eq.$currentUserId)',
+        )
         .maybeSingle();
 
     if (existing != null) {
