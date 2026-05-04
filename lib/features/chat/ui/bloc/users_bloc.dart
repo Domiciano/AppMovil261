@@ -1,5 +1,3 @@
-import 'package:appmovil261/features/chat/data/repository/chat_repository_impl.dart';
-import 'package:appmovil261/features/chat/data/sources/chat_data_source.dart';
 import 'package:appmovil261/features/chat/domain/usecases/get_profiles_usecase.dart';
 import 'package:appmovil261/features/profile/domain/model/profile.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,9 +29,7 @@ class UsersErrorState extends UsersState {
 
 // BLoC
 class UsersBloc extends Bloc<UsersEvent, UsersState> {
-  final GetProfilesUsecase _usecase = GetProfilesUsecase(
-    ChatRepositoryImpl(ChatDataSource()),
-  );
+  final GetProfilesUsecase _usecase = GetProfilesUsecase();
 
   UsersBloc() : super(UsersInitialState()) {
     on<LoadUsersEvent>(_load);

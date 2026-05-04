@@ -1,5 +1,3 @@
-import 'package:appmovil261/features/chat/data/repository/chat_repository_impl.dart';
-import 'package:appmovil261/features/chat/data/sources/chat_data_source.dart';
 import 'package:appmovil261/features/chat/domain/usecases/get_or_create_conversation_usecase.dart';
 import 'package:appmovil261/features/chat/ui/bloc/users_bloc.dart';
 import 'package:appmovil261/features/chat/ui/pages/chat_page.dart';
@@ -60,10 +58,7 @@ class _UserTileState extends State<_UserTile> {
   Future<void> _openChat() async {
     setState(() => _loading = true);
     try {
-      final usecase = GetOrCreateConversationUsecase(
-        ChatRepositoryImpl(ChatDataSource()),
-      );
-      final conversation = await usecase.execute(
+      final conversation = await GetOrCreateConversationUsecase().execute(
         widget.currentUserId,
         widget.user.id,
       );

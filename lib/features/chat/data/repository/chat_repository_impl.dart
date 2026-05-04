@@ -5,8 +5,7 @@ import 'package:appmovil261/features/chat/domain/repository/chat_repository.dart
 import 'package:appmovil261/features/profile/domain/model/profile.dart';
 
 class ChatRepositoryImpl implements ChatRepository {
-  final ChatDataSource _dataSource;
-  ChatRepositoryImpl(this._dataSource);
+  final ChatDataSource _dataSource = ChatDataSource();
 
   @override
   Future<List<Profile>> getProfiles(String currentUserId) {

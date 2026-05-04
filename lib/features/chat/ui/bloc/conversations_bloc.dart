@@ -1,5 +1,3 @@
-import 'package:appmovil261/features/chat/data/repository/chat_repository_impl.dart';
-import 'package:appmovil261/features/chat/data/sources/chat_data_source.dart';
 import 'package:appmovil261/features/chat/domain/models/conversation.dart';
 import 'package:appmovil261/features/chat/domain/usecases/get_conversations_usecase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,9 +29,7 @@ class ConversationsErrorState extends ConversationsState {
 
 // BLoC
 class ConversationsBloc extends Bloc<ConversationsEvent, ConversationsState> {
-  final GetConversationsUsecase _usecase = GetConversationsUsecase(
-    ChatRepositoryImpl(ChatDataSource()),
-  );
+  final GetConversationsUsecase _usecase = GetConversationsUsecase();
 
   ConversationsBloc() : super(ConversationsInitialState()) {
     on<LoadConversationsEvent>(_load);

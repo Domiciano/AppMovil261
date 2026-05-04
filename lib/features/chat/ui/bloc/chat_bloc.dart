@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:appmovil261/features/chat/data/repository/chat_repository_impl.dart';
-import 'package:appmovil261/features/chat/data/sources/chat_data_source.dart';
 import 'package:appmovil261/features/chat/domain/models/message.dart';
 import 'package:appmovil261/features/chat/domain/usecases/send_message_usecase.dart';
 import 'package:appmovil261/features/chat/domain/usecases/watch_messages_usecase.dart';
@@ -50,15 +48,11 @@ class ChatErrorState extends ChatState {
 
 // BLoC
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
-  final _repo = ChatRepositoryImpl(ChatDataSource());
-  late final WatchMessagesUsecase _watchUsecase;
-  late final SendMessageUsecase _sendUsecase;
+  final _watchUsecase = WatchMessagesUsecase();
+  final _sendUsecase = SendMessageUsecase();
   StreamSubscription<List<Message>>? _subscription;
 
   ChatBloc() : super(ChatInitialState()) {
-    _watchUsecase = WatchMessagesUsecase(_repo);
-    _sendUsecase = SendMessageUsecase(_repo);
-
     on<SubscribeToMessagesEvent>(_subscribe);
     on<_MessagesUpdatedEvent>(_onUpdated);
     on<SendMessageEvent>(_send);
