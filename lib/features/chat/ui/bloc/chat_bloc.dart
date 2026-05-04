@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:appmovil261/features/chat/domain/models/message.dart';
+import 'package:appmovil261/features/chat/domain/usecases/send_message_usecase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:uuid/uuid.dart';
 
 // Events
 abstract class ChatEvent {}
@@ -46,5 +48,21 @@ class ChatErrorState extends ChatState {
 
 // BLoC
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
-  ChatBloc() : super(ChatInitialState());
+  SendMessageUsecase _sendMessageUsecase = SendMessageUsecase();
+
+  ChatBloc() : super(ChatInitialState()) {
+    on<SubscribeToMessagesEvent>((event, emit) {});
+    on<_MessagesUpdatedEvent>((event, emit) {});
+    on<SendMessageEvent>((event, emit) {
+      _sendMessageUsecase.execute(
+        Message(
+          id: Uuid().v4(),
+          conversationId: event.conversationId,
+          senderId: event.senderId,
+          content: event.content,
+          createdAt: DateTime.now(),
+        ),
+      );
+    });
+  }
 }

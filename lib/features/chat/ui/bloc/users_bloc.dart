@@ -57,6 +57,7 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> {
 
     on<SelectUserEvent>((event, emit) async {
       //Crear la conversacion u obtenerla
+      print("Creando la conversación...");
       Conversation conversation = await _getOrCreateConversationUsecase.execute(
         event.currentUserId,
         event.otherUser.id,

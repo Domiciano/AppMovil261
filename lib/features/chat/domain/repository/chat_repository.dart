@@ -1,4 +1,5 @@
 import 'package:appmovil261/features/chat/domain/models/conversation.dart';
+import 'package:appmovil261/features/chat/domain/models/message.dart';
 import 'package:appmovil261/features/profile/domain/model/profile.dart';
 
 abstract class ChatRepository {
@@ -7,4 +8,5 @@ abstract class ChatRepository {
     String currentUserId,
     String otherUserId,
   );
+  Future<void> sendMessage(Message message);
 }

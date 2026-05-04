@@ -15,6 +15,7 @@ class ChatDataSource {
     String currentUserId,
     String otherUserId,
   ) async {
+    print("Get or create *****");
     // Busca si ya existe la conversación en cualquier dirección
     final existing = await _client
         .from('conversations')

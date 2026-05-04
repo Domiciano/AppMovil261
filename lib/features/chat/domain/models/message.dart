@@ -14,10 +14,10 @@ class Message {
   });
 
   Map<String, dynamic> toJson() => {
-        'conversation_id': conversationId,
-        'sender_id': senderId,
-        'content': content,
-      };
+    'conversation_id': conversationId,
+    'sender_id': senderId,
+    'content': content,
+  };
 
   factory Message.fromJson(Map<String, dynamic> json) {
     return Message(
