@@ -39,11 +39,13 @@ class _ChatPageState extends State<ChatPage> {
     final text = _controller.text.trim();
     if (text.isEmpty) return;
     final currentUserId = Supabase.instance.client.auth.currentUser!.id;
-    context.read<ChatBloc>().add(SendMessageEvent(
-          conversationId: widget.conversationId,
-          senderId: currentUserId,
-          content: text,
-        ));
+    context.read<ChatBloc>().add(
+      SendMessageEvent(
+        conversationId: widget.conversationId,
+        senderId: currentUserId,
+        content: text,
+      ),
+    );
     _controller.clear();
     setState(() => _selectedImage = null);
   }
@@ -51,8 +53,8 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ChatBloc()
-        ..add(SubscribeToMessagesEvent(widget.conversationId)),
+      create: (_) =>
+          ChatBloc()..add(SubscribeToMessagesEvent(widget.conversationId)),
       child: Scaffold(
         appBar: AppBar(title: Text(widget.otherUserName)),
         body: Column(
@@ -62,7 +64,10 @@ class _ChatPageState extends State<ChatPage> {
               SizedBox(
                 height: 80,
                 width: double.infinity,
-                child: Image.file(File(_selectedImage!.path), fit: BoxFit.cover),
+                child: Image.file(
+                  File(_selectedImage!.path),
+                  fit: BoxFit.cover,
+                ),
               ),
             _InputBar(
               controller: _controller,
@@ -111,9 +116,9 @@ class _MessageList extends StatelessWidget {
 class _MessageBubble extends StatelessWidget {
   final dynamic msg;
   final bool isMe;
-  final String? imagePath;
+  final String? imageUrl;
 
-  const _MessageBubble({required this.msg, required this.isMe, this.imagePath});
+  const _MessageBubble({required this.msg, required this.isMe, this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -131,11 +136,11 @@ class _MessageBubble extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (imagePath != null)
+            if (imageUrl != null)
               SizedBox(
                 width: 200,
                 height: 150,
-                child: Image.file(File(imagePath!), fit: BoxFit.cover),
+                child: Image.network(imageUrl!, fit: BoxFit.cover),
               ),
             Text(
               msg.content,
@@ -171,8 +176,9 @@ class _InputBar extends StatelessWidget {
         child: Row(
           children: [
             CircleAvatar(
-              backgroundColor:
-                  Theme.of(context).colorScheme.surfaceContainerHighest,
+              backgroundColor: Theme.of(
+                context,
+              ).colorScheme.surfaceContainerHighest,
               child: IconButton(
                 icon: const Icon(Icons.photo_library_outlined),
                 onPressed: onPickImage,
@@ -185,8 +191,10 @@ class _InputBar extends StatelessWidget {
                 decoration: const InputDecoration(
                   hintText: 'Escribe un mensaje...',
                   border: OutlineInputBorder(),
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 10,
+                  ),
                 ),
                 onSubmitted: (_) => onSend(context),
               ),
